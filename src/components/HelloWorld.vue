@@ -70,6 +70,10 @@
         width: 100%;
     }
 
+    .image, .content {
+        transform: translateX(-100%);
+    }
+
     .image {
         position:absolute;
         width:100%;
@@ -104,12 +108,12 @@
     }
 
     @keyframes slide-out {
-        0% { transform: translateX(0%); }
-        100% { transform: translateX(-100%); }
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(-200%); }
     }
 
     @-webkit-keyframes slide-out {
-        0% { -webkit-transform: translateX(0%); }
-        100% { -webkit-transform: translateX(-100%); }
+        0% { -webkit-transform: translateX(-100%); }
+        100% { -webkit-transform: translateX(-200%); }
     }
 </style>

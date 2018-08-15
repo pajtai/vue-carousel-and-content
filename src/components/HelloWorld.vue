@@ -1,14 +1,12 @@
 <template>
     <div>
         <div class="box">
-            <div class="slider">
-                <transition-group name="list-complete">
-                    <div class="slide" v-for="(slide, index) in slides" :key="index" :style="index === 0 ? `transition: 1s; margin-left: -${firstSlideOffset}%` : ''">
-                        <div class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
-                        <div class="content" v-html="slide.content"></div>
-                    </div>
-                </transition-group>
-            </div>
+            <transition-group name="list" tag="div" class="slider">
+                <div class="slide" v-for="(slide, index) in slides" :key="index" :style="index === 0 ? `margin-left: -${firstSlideOffset}%` : ''">
+                    <div class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
+                    <div class="content" v-html="slide.content"></div>
+                </div>
+            </transition-group>
         </div>
         <div @click="prev" class="prev nav">&larr;</div>
         <div @click="next" class="next nav">&rarr;</div>
@@ -27,11 +25,13 @@
         },
         methods: {
             next() {
+                // this.firstSlideOffset += 100;
                 const first = this.slides.shift();
                 this.slides.push(first);
                 console.log('next');
             },
             prev() {
+                // this.firstSlideOffset -= 100;
                 const last = this.slides.pop();
                 this.slides.unshift(last);
                 console.log('prev');

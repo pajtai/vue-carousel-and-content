@@ -2,9 +2,9 @@
     <div>
         <div class="box">
             <transition-group name="list" tag="div" class="slider">
-                <div class="slide" v-for="(slide, index) in slides" :key="index" :style="index === 0 ? `margin-left: -${firstSlideOffset}%` : ''">
-                    <div class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
-                    <div class="content" v-html="slide.content"></div>
+                <div class="slide" v-for="(slide, index) in slides" :key="index">
+                    <div :class="animationClass" class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
+                    <div :class="animationClass" class="content" v-html="slide.content"></div>
                 </div>
             </transition-group>
         </div>
@@ -20,20 +20,21 @@
         data: function() {
             return {
                 current: 0,
-                firstSlideOffset: 100
+                firstSlideOffset: 100,
+                animationClass: '',
             }
         },
         methods: {
             next() {
-                // this.firstSlideOffset += 100;
-                const first = this.slides.shift();
-                this.slides.push(first);
+                this.animationClass = 'slide-out';
+                // const first = this.slides.shift();
+                // this.slides.push(first);
                 console.log('next');
             },
             prev() {
-                // this.firstSlideOffset -= 100;
-                const last = this.slides.pop();
-                this.slides.unshift(last);
+                this.animationClass = 'slide-in';
+                // const last = this.slides.pop();
+                // this.slides.unshift(last);
                 console.log('prev');
             }
         }
@@ -82,5 +83,33 @@
         top:100%;
         border-left: 1px solid red;
         border-right: 1px solid red;
+    }
+
+    .slide-in {
+        animation: slide-in 0.5s forwards;
+        -webkit-animation: slide-in 0.5s forwards;
+    }
+
+    .slide-out {
+        animation: slide-out 0.5s forwards;
+        -webkit-animation: slide-out 0.5s forwards;
+    }
+
+    @keyframes slide-in {
+        100% { transform: translateX(0%); }
+    }
+
+    @-webkit-keyframes slide-in {
+        100% { -webkit-transform: translateX(0%); }
+    }
+
+    @keyframes slide-out {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    @-webkit-keyframes slide-out {
+        0% { -webkit-transform: translateX(0%); }
+        100% { -webkit-transform: translateX(-100%); }
     }
 </style>

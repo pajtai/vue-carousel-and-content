@@ -26,7 +26,6 @@ export default {
       current: 0,
       firstSlideOffset: 100,
       animationClass: "",
-      animationClassCached: "",
       listening: false
     };
   },
@@ -49,14 +48,13 @@ export default {
           console.log("done prev");
           break;
       }
-      this.animationClass = this.animationClassCached;
+      this.animationClass = "";
       this.listening = false;
     },
 
     next() {
       scrollTo(this.$refs.box, 0, 250, () => {
         this.listening = "next";
-        this.animationClassCached = this.animationClass;
         this.animationClass = "slide-out";
       });
 
@@ -65,7 +63,6 @@ export default {
     prev() {
       scrollTo(this.$refs.box, 0, 250, () => {
         this.listening = "prev";
-        this.animationClassCached = this.animationClass;
         this.animationClass = "slide-in";
       });
 
@@ -73,20 +70,22 @@ export default {
     },
 
     peaknext() {
-      console.log("pn");
       this.animationClass = "peak-out";
     },
     peakprev() {
-      console.log("pp");
       this.animationClass = "peak-in";
     },
     unpeakprev() {
-      this.animationClass = "un-peak-prev";
-      this.animationClassCached = '';
+      // Only need to move image back to original location, if it is out of place
+      if (this.animationClass === "peak-in") {
+          this.animationClass = "un-peak-prev";
+      }
     },
     unpeaknext() {
-      this.animationClass = "un-peak-next";
-      this.animationClassCached = '';
+      // Only need to move image back to original location, if it is out of place
+      if (this.animationClass === "peak-out") {
+          this.animationClass = "un-peak-next";
+      }
     },
 
     down() {

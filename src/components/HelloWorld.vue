@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="box">
+        <div class="box" ref="box">
             <transition-group name="list" tag="div" class="slider">
                 <div class="slide" v-for="(slide, index) in slides" :key="index">
-                    <div :class="animationClass" class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
+                    <div @animationend="doneWithAnimation" :class="animationClass" class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
                     <div :class="animationClass" class="content" v-html="slide.content"></div>
                 </div>
             </transition-group>
@@ -22,23 +22,88 @@
                 current: 0,
                 firstSlideOffset: 100,
                 animationClass: '',
+                listening: false
             }
         },
         methods: {
+            doneWithAnimation() {
+                if (!this.listening) {
+                    return;
+                }
+
+                switch (this.listening) {
+                    case 'next':
+                        const first = this.slides.shift();
+                        this.slides.push(first);
+                        console.log('done next');
+                        break;
+                    case 'prev':
+                        const last = this.slides.pop();
+                        this.slides.unshift(last);
+                        console.log('done prev');
+                        break;
+                }
+                this.animationClass = '';
+                this.listening = false;
+            },
             next() {
-                this.animationClass = 'slide-out';
-                // const first = this.slides.shift();
-                // this.slides.push(first);
+                scrollTo(this.$refs.box,0, 250, () => {
+                    this.listening = 'next';
+                    this.animationClass = 'slide-out';
+                });
+
                 console.log('next');
             },
             prev() {
-                this.animationClass = 'slide-in';
-                // const last = this.slides.pop();
-                // this.slides.unshift(last);
+                scrollTo(this.$refs.box,0, 250, () => {
+                    this.listening = 'prev';
+                    this.animationClass = 'slide-in';
+                });
+
                 console.log('prev');
             }
         }
     };
+
+    function scrollTo(element, to = 0, duration= 1000, callback) {
+
+        const start = element.scrollTop;
+        const change = to - start;
+        const increment = 20;
+        let currentTime = 0;
+
+        const animateScroll = (() => {
+
+            currentTime += increment;
+
+            element.scrollTop = Math.easeInOutQuad(currentTime, start, change, duration);
+
+            if (currentTime < duration  && change !== 0) {
+                setTimeout(animateScroll, increment);
+            } else {
+                if (callback) {
+                    element.scrollTop = to;
+                    callback();
+                }
+            }
+        });
+
+        animateScroll();
+    }
+
+    //t = current time
+    //b = start value
+    //c = change in value
+    //d = duration
+    Math.easeInOutQuad = function (t, b, c, d) {
+
+        t /= d/2;
+        if (t < 1) return c/2*t*t + b;
+        t--;
+        return -c/2 * (t*(t-2) - 1) + b;
+    };
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

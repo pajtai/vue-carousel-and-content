@@ -12,8 +12,8 @@
                 </div>
             </div>
         </div>
-        <div @click="prev" class="prev nav">&larr;</div>
-        <div @click="next" class="next nav">&rarr;</div>
+        <div @click="prev" @mouseover="peakprev" @mouseleave="unpeakprev" class="prev nav">&larr;</div>
+        <div @click="next" @mouseover="peaknext" @mouseleave="unpeaknext" class="next nav">&rarr;</div>
     </div>
 </template>
 
@@ -50,6 +50,7 @@
                 this.animationClass = '';
                 this.listening = false;
             },
+
             next() {
                 scrollTo(this.$refs.box,0, 250, () => {
                     this.listening = 'next';
@@ -66,6 +67,22 @@
 
                 console.log('prev');
             },
+
+            peaknext() {
+                console.log('pn');
+                this.animationClass = 'peak-out';
+            },
+            peakprev() {
+                console.log('pp');
+                this.animationClass = 'peak-in';
+            },
+            unpeakprev() {
+                this.animationClass = 'un-peak-prev';
+            },
+            unpeaknext() {
+                this.animationClass = 'un-peak-next';
+            },
+
             down() {
                 const box = this.$refs.box;
                 scrollTo(box, box.scrollTop + 100, 250);
@@ -187,20 +204,92 @@
     }
 
     @keyframes slide-in {
+        0% { transform: translateX(-90%); }
         100% { transform: translateX(0%); }
     }
 
     @-webkit-keyframes slide-in {
+        0% { -webkit-transform: translateX(-90%); }
         100% { -webkit-transform: translateX(0%); }
     }
 
     @keyframes slide-out {
-        0% { transform: translateX(-100%); }
+        0% { transform: translateX(-110%); }
         100% { transform: translateX(-200%); }
     }
 
     @-webkit-keyframes slide-out {
-        0% { -webkit-transform: translateX(-100%); }
+        0% { -webkit-transform: translateX(-110%); }
         100% { -webkit-transform: translateX(-200%); }
+    }
+
+
+    .peak-in {
+        animation: peak-in 0.5s forwards;
+        -webkit-animation: peak-in 0.5s forwards;
+    }
+
+    .peak-out {
+        animation: peak-out 0.5s forwards;
+        -webkit-animation: peak-out 0.5s forwards;
+    }
+
+    .un-peak {
+        animation: un-peak 0.5s forwards;
+        -webkit-animation: un-peak 0.5s forwards;
+    }
+
+    @keyframes peak-in {
+        100% { transform: translateX(-90%); }
+    }
+
+    @-webkit-keyframes peak-in {
+        100% { -webkit-transform: translateX(-90%); }
+    }
+
+    @keyframes peak-out {
+        100% { transform: translateX(-110%); }
+    }
+
+    @-webkit-keyframes peak-out {
+        100% { -webkit-transform: translateX(-110%); }
+    }
+
+    @keyframes un-peak {
+        100% { transform: translateX(-100%); }
+    }
+
+    @-webkit-keyframes un-peak {
+        100% { -webkit-transform: translateX(-100%); }
+    }
+
+    .un-peak-prev {
+        animation: un-peak-prev 0.5s forwards;
+        -webkit-animation: un-peak-prev 0.5s forwards;
+    }
+
+    @keyframes un-peak-prev {
+        0% { transform: translateX(-90%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    @-webkit-keyframes un-peak-prev {
+        0% { -webkit-transform: translateX(-90%); }
+        100% { -webkit-transform: translateX(-100%); }
+    }
+
+    .un-peak-next {
+        animation: un-peak-next 0.5s forwards;
+        -webkit-animation: un-peak-next 0.5s forwards;
+    }
+
+    @keyframes un-peak-next {
+        0% { transform: translateX(-110%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    @-webkit-keyframes un-peak-next {
+        0% { -webkit-transform: translateX(-110%); }
+        100% { -webkit-transform: translateX(-100%); }
     }
 </style>

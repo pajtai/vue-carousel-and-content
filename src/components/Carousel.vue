@@ -1,12 +1,16 @@
 <template>
     <div>
         <div class="box" ref="box">
-            <transition-group name="list" tag="div" class="slider">
+            <div class="slider">
                 <div class="slide" v-for="(slide, index) in slides" :key="index">
-                    <div @animationend="doneWithAnimation" :class="animationClass" class="image"  :style="'background-image:url(\'' + slide.img + '\')'">&nbsp;</div>
+                    <div @animationend="doneWithAnimation" :class="animationClass" class="image"  :style="'background-image:url(\'' + slide.img + '\')'">
+                        &nbsp;
+                        <div v-if="slide.title" class="title">{{ slide.title }}</div>
+                        <div v-if="slide.content" @click="down" class="down">&darr;</div>
+                    </div>
                     <div :class="animationClass" class="content" v-html="slide.content"></div>
                 </div>
-            </transition-group>
+            </div>
         </div>
         <div @click="prev" class="prev nav">&larr;</div>
         <div @click="next" class="next nav">&rarr;</div>
@@ -55,12 +59,16 @@
                 console.log('next');
             },
             prev() {
-                scrollTo(this.$refs.box,0, 250, () => {
+                scrollTo(this.$refs.box, 0, 250, () => {
                     this.listening = 'prev';
                     this.animationClass = 'slide-in';
                 });
 
                 console.log('prev');
+            },
+            down() {
+                const box = this.$refs.box;
+                scrollTo(box, box.scrollTop + 100, 250);
             }
         }
     };
@@ -114,6 +122,13 @@
         top: 50%;
         font-size: 36px;
     }
+    .down {
+        position: absolute;
+        bottom: 0%;
+        left: 50%;
+        font-size: 48px;
+        cursor: pointer;
+    }
     .prev {
         left: 0;
     }
@@ -145,6 +160,13 @@
         height:100%;
         background-size:cover;
         background-position: center;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+    .title {
+        font-size: 120px;
+        margin-bottom: 10%;
     }
     .content {
         position:absolute;

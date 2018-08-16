@@ -24,18 +24,27 @@
 </template>
 
 <script>
+
+// Create constants from string that are used more than once, so we don't typo them
+const LISTENING_FOR_NEXT = 'next';
+const LISTENING_FOR_PREV = 'prev';
+const PEAK_NEXT = 'peak-next';
+const PEAK_PREV = 'peak-prev';
+
 export default {
-  name: "HelloWorld",
+  name: "Carousel",
   props: ["slides"],
+
   data: function() {
     return {
       current: 0,
-      firstSlideOffset: 100,
       animationClass: "",
       listening: false
     };
   },
+
   methods: {
+    // When a CSS animation finishes, do some cleanup and slide rearrangement as needed
     doneWithAnimation() {
       if (!this.listening) {
         return;
@@ -43,15 +52,13 @@ export default {
 
       let first, last;
       switch (this.listening) {
-        case "next":
+        case LISTENING_FOR_NEXT:
           first = this.slides.shift();
           this.slides.push(first);
-          console.log("done next");
           break;
-        case "prev":
+        case LISTENING_FOR_PREV:
           last = this.slides.pop();
           this.slides.unshift(last);
-          console.log("done prev");
           break;
       }
       this.animationClass = "";
@@ -60,36 +67,32 @@ export default {
 
     next() {
       scrollTo(this.$refs.box, 0, 250, () => {
-        this.listening = "next";
-        this.animationClass = "slide-out";
+        this.listening = LISTENING_FOR_NEXT;
+        this.animationClass = "slide-next";
       });
-
-      console.log("next");
     },
     prev() {
       scrollTo(this.$refs.box, 0, 250, () => {
-        this.listening = "prev";
-        this.animationClass = "slide-in";
+        this.listening = LISTENING_FOR_PREV;
+        this.animationClass = "slide-prev";
       });
-
-      console.log("prev");
     },
 
     peaknext() {
-      this.animationClass = "peak-out";
+      this.animationClass = PEAK_NEXT;
     },
     peakprev() {
-      this.animationClass = "peak-in";
+      this.animationClass = PEAK_PREV;
     },
     unpeakprev() {
       // Only need to move image back to original location, if it is out of place
-      if (this.animationClass === "peak-in") {
+      if (this.animationClass === PEAK_PREV) {
           this.animationClass = "un-peak-prev";
       }
     },
     unpeaknext() {
       // Only need to move image back to original location, if it is out of place
-      if (this.animationClass === "peak-out") {
+      if (this.animationClass === PEAK_NEXT) {
           this.animationClass = "un-peak-next";
       }
     },
@@ -143,7 +146,7 @@ Math.easeInOutQuad = function(t, b, c, d) {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped>
 .nav {
   position: fixed;
   cursor: pointer;
@@ -152,7 +155,7 @@ Math.easeInOutQuad = function(t, b, c, d) {
 }
 .down {
   position: absolute;
-  bottom: 0%;
+  bottom: 0;
   left: 50%;
   font-size: 48px;
   cursor: pointer;
@@ -201,64 +204,26 @@ Math.easeInOutQuad = function(t, b, c, d) {
   position: absolute;
   width: 100%;
   top: 100%;
-  border-left: 1px solid red;
-  border-right: 1px solid red;
 }
 
-.slide-in {
-  animation: slide-in 0.5s forwards;
-  -webkit-animation: slide-in 0.5s forwards;
+.slide-prev {
+  animation: slide-prev 0.5s forwards;
+  -webkit-animation: slide-prev 0.5s forwards;
 }
 
-.slide-out {
-  animation: slide-out 0.5s forwards;
-  -webkit-animation: slide-out 0.5s forwards;
+.slide-next {
+  animation: slide-next 0.5s forwards;
+  -webkit-animation: slide-next 0.5s forwards;
 }
 
-@keyframes slide-in {
-  0% {
-    transform: translateX(-90%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
+.peak-prev {
+  animation: peak-prev 0.5s forwards;
+  -webkit-animation: peak-prev 0.5s forwards;
 }
 
-@-webkit-keyframes slide-in {
-  0% {
-    -webkit-transform: translateX(-90%);
-  }
-  100% {
-    -webkit-transform: translateX(0%);
-  }
-}
-
-@keyframes slide-out {
-  0% {
-    transform: translateX(-110%);
-  }
-  100% {
-    transform: translateX(-200%);
-  }
-}
-
-@-webkit-keyframes slide-out {
-  0% {
-    -webkit-transform: translateX(-110%);
-  }
-  100% {
-    -webkit-transform: translateX(-200%);
-  }
-}
-
-.peak-in {
-  animation: peak-in 0.5s forwards;
-  -webkit-animation: peak-in 0.5s forwards;
-}
-
-.peak-out {
-  animation: peak-out 0.5s forwards;
-  -webkit-animation: peak-out 0.5s forwards;
+.peak-next {
+  animation: peak-next 0.5s forwards;
+  -webkit-animation: peak-next 0.5s forwards;
 }
 
 .un-peak {
@@ -266,68 +231,106 @@ Math.easeInOutQuad = function(t, b, c, d) {
   -webkit-animation: un-peak 0.5s forwards;
 }
 
-@keyframes peak-in {
-  100% {
-    transform: translateX(-90%);
-  }
-}
-
-@-webkit-keyframes peak-in {
-  100% {
-    -webkit-transform: translateX(-90%);
-  }
-}
-
-@keyframes peak-out {
-  100% {
-    transform: translateX(-110%);
-  }
-}
-
-@-webkit-keyframes peak-out {
-  100% {
-    -webkit-transform: translateX(-110%);
-  }
-}
-
-@keyframes un-peak {
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@-webkit-keyframes un-peak {
-  100% {
-    -webkit-transform: translateX(-100%);
-  }
-}
-
 .un-peak-prev {
   animation: un-peak-prev 0.5s forwards;
   -webkit-animation: un-peak-prev 0.5s forwards;
 }
 
-@keyframes un-peak-prev {
-  0% {
-    transform: translateX(-90%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@-webkit-keyframes un-peak-prev {
-  0% {
-    -webkit-transform: translateX(-90%);
-  }
-  100% {
-    -webkit-transform: translateX(-100%);
-  }
-}
-
 .un-peak-next {
   animation: un-peak-next 0.5s forwards;
   -webkit-animation: un-peak-next 0.5s forwards;
+}
+
+
+@keyframes slide-prev {
+    0% {
+        transform: translateX(-90%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@-webkit-keyframes slide-prev {
+    0% {
+        -webkit-transform: translateX(-90%);
+    }
+    100% {
+        -webkit-transform: translateX(0%);
+    }
+}
+
+@keyframes slide-next {
+    0% {
+        transform: translateX(-110%);
+    }
+    100% {
+        transform: translateX(-200%);
+    }
+}
+
+@-webkit-keyframes slide-next {
+    0% {
+        -webkit-transform: translateX(-110%);
+    }
+    100% {
+        -webkit-transform: translateX(-200%);
+    }
+}
+
+
+@keyframes peak-prev {
+    100% {
+        transform: translateX(-90%);
+    }
+}
+
+@-webkit-keyframes peak-prev {
+    100% {
+        -webkit-transform: translateX(-90%);
+    }
+}
+
+@keyframes peak-next {
+    100% {
+        transform: translateX(-110%);
+    }
+}
+
+@-webkit-keyframes peak-next {
+    100% {
+        -webkit-transform: translateX(-110%);
+    }
+}
+
+@keyframes un-peak {
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@-webkit-keyframes un-peak {
+    100% {
+        -webkit-transform: translateX(-100%);
+    }
+}
+
+@keyframes un-peak-prev {
+    0% {
+        transform: translateX(-90%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@-webkit-keyframes un-peak-prev {
+    0% {
+        -webkit-transform: translateX(-90%);
+    }
+    100% {
+        -webkit-transform: translateX(-100%);
+    }
 }
 
 @keyframes un-peak-next {

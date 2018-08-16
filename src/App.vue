@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <vue-carousel :slides="slides"/>
+    <vue-carousel :slides="slides">
+      <template slot="next">
+        &raquo;
+      </template>
+    </vue-carousel>
   </div>
 </template>
 
@@ -21,7 +25,9 @@ export default {
         },
         {
           img:
-            "https://images.pexels.com/photos/418626/pexels-photo-418626.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+            "https://images.pexels.com/photos/418626/pexels-photo-418626.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          content:
+            "<h2>two!</h2><h2>one!</h2><h2>one!</h2><h2>one!</h2><h2>one!</h2><h2>one!</h2>"
         },
         {
           img:

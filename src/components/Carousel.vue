@@ -24,12 +24,11 @@
 </template>
 
 <script>
-
 // Create constants from string that are used more than once, so we don't typo them
-const LISTENING_FOR_NEXT = 'next';
-const LISTENING_FOR_PREV = 'prev';
-const PEAK_NEXT = 'peak-next';
-const PEAK_PREV = 'peak-prev';
+const LISTENING_FOR_NEXT = "next";
+const LISTENING_FOR_PREV = "prev";
+const PEAK_NEXT = "peak-next";
+const PEAK_PREV = "peak-prev";
 
 export default {
   name: "Carousel",
@@ -87,13 +86,13 @@ export default {
     unpeakprev() {
       // Only need to move image back to original location, if it is out of place
       if (this.animationClass === PEAK_PREV) {
-          this.animationClass = "un-peak-prev";
+        this.animationClass = "un-peak-prev";
       }
     },
     unpeaknext() {
       // Only need to move image back to original location, if it is out of place
       if (this.animationClass === PEAK_NEXT) {
-          this.animationClass = "un-peak-next";
+        this.animationClass = "un-peak-next";
       }
     },
 
@@ -241,96 +240,94 @@ Math.easeInOutQuad = function(t, b, c, d) {
   -webkit-animation: un-peak-next 0.5s forwards;
 }
 
-
 @keyframes slide-prev {
-    0% {
-        transform: translateX(-90%);
-    }
-    100% {
-        transform: translateX(0%);
-    }
+  0% {
+    transform: translateX(-90%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 @-webkit-keyframes slide-prev {
-    0% {
-        -webkit-transform: translateX(-90%);
-    }
-    100% {
-        -webkit-transform: translateX(0%);
-    }
+  0% {
+    -webkit-transform: translateX(-90%);
+  }
+  100% {
+    -webkit-transform: translateX(0%);
+  }
 }
 
 @keyframes slide-next {
-    0% {
-        transform: translateX(-110%);
-    }
-    100% {
-        transform: translateX(-200%);
-    }
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
 }
 
 @-webkit-keyframes slide-next {
-    0% {
-        -webkit-transform: translateX(-110%);
-    }
-    100% {
-        -webkit-transform: translateX(-200%);
-    }
+  0% {
+    -webkit-transform: translateX(-110%);
+  }
+  100% {
+    -webkit-transform: translateX(-200%);
+  }
 }
 
-
 @keyframes peak-prev {
-    100% {
-        transform: translateX(-90%);
-    }
+  100% {
+    transform: translateX(-90%);
+  }
 }
 
 @-webkit-keyframes peak-prev {
-    100% {
-        -webkit-transform: translateX(-90%);
-    }
+  100% {
+    -webkit-transform: translateX(-90%);
+  }
 }
 
 @keyframes peak-next {
-    100% {
-        transform: translateX(-110%);
-    }
+  100% {
+    transform: translateX(-110%);
+  }
 }
 
 @-webkit-keyframes peak-next {
-    100% {
-        -webkit-transform: translateX(-110%);
-    }
+  100% {
+    -webkit-transform: translateX(-110%);
+  }
 }
 
 @keyframes un-peak {
-    100% {
-        transform: translateX(-100%);
-    }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 @-webkit-keyframes un-peak {
-    100% {
-        -webkit-transform: translateX(-100%);
-    }
+  100% {
+    -webkit-transform: translateX(-100%);
+  }
 }
 
 @keyframes un-peak-prev {
-    0% {
-        transform: translateX(-90%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(-90%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 @-webkit-keyframes un-peak-prev {
-    0% {
-        -webkit-transform: translateX(-90%);
-    }
-    100% {
-        -webkit-transform: translateX(-100%);
-    }
+  0% {
+    -webkit-transform: translateX(-90%);
+  }
+  100% {
+    -webkit-transform: translateX(-100%);
+  }
 }
 
 @keyframes un-peak-next {

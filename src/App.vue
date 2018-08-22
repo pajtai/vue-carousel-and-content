@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <vue-carousel :slides="slides">
-      <template slot="next">
-        &raquo;
-      </template>
-    </vue-carousel>
+    <div class="carousel">
+        <vue-carousel :slides="slides"></vue-carousel>
+    </div>
+      <div class="carousel">
+          <vue-carousel :slides="slides"></vue-carousel>
+      </div>
   </div>
 </template>
 
@@ -57,5 +58,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.carousel {
+    float: left;
+    width:600px;
+    height:400px;
+    position: relative;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="parent">
         <div class="box" ref="box">
             <div class="slider">
                 <div class="slide" v-for="(slide, index) in slides" :key="index">
@@ -147,7 +147,7 @@ Math.easeInOutQuad = function(t, b, c, d) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .nav {
-  position: fixed;
+  position: absolute;
   cursor: pointer;
   top: 50%;
   font-size: 36px;
@@ -165,11 +165,11 @@ Math.easeInOutQuad = function(t, b, c, d) {
 .next {
   right: 0;
 }
-.box {
+.box, .parent {
   overflow-x: hidden;
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 .slider {
   display: flex;
